@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -26,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void toastMsg(String msg) {
+        Toast toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -35,16 +41,24 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    //TODO: onClick & onClickListener 구현하기
+    // drawer 구현
+    // menuitemclicklistener();
+    // icons add
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search :
                 ((TextView)findViewById(R.id.textView)).setText("Search");
+                toastMsg("");
                 return true;
             case R.id.more :
                 ((TextView)findViewById(R.id.textView)).setText("More");
+                toastMsg("");
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
