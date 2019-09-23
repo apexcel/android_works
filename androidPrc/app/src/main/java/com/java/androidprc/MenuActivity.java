@@ -31,8 +31,14 @@ public class MenuActivity extends AppCompatActivity {
     private void processingIntent(Intent intent) {
         if (intent != null) {
             ArrayList<String> names = (ArrayList<String>) intent.getSerializableExtra("names");
-            Toast.makeText(getApplicationContext(), "Passed Names list items count : " + names.size(), Toast.LENGTH_LONG).show();
+            if (names != null) {
+                Toast.makeText(getApplicationContext(), "Passed Names list items count : " + names.size(), Toast.LENGTH_LONG).show();
+            }
+            SimpleData data = (SimpleData) intent.getParcelableExtra("data");
+            if (data != null) {
+                Toast.makeText(getApplicationContext(), "Passed Data, Simple Data : " + data.message, Toast.LENGTH_LONG).show();
+            }
+
         }
     }
-
 }

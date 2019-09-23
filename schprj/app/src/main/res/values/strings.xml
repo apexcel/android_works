@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">schprj</string>
+    <string name="search">Search</string>
+    <string name="more">More</string>
+    <string name="lecture_week4">Week 4</string>
+    <string name="plus">Plus</string>
+    <string name="subtract">Subtract</string>
+    <string name="multiply">Multiply</string>
+    <string name="divide">Divide</string>
+    <string name="toWeek4">To Week 4</string>
+</resources>
