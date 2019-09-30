@@ -25,7 +25,7 @@ public class SimpleData implements Parcelable {
           public SimpleData[] newArray(int size) {
               return new SimpleData[size];
         }
-    }
+    };
 
     @Override
     public int describeContents() {

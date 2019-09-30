@@ -8,4 +8,12 @@
     <string name="multiply">Multiply</string>
     <string name="divide">Divide</string>
     <string name="toWeek4">To Week 4</string>
+    <string name="toWeek4_2">To Week 4_2</string>
+    <string name="backToMain">Back to Main</string>
+
+    <string name="askStart">"Check the below button if you want to start"</string>
+    <string name="askAnimal">Which animal do you like?</string>
+    <string name="doggie">Doggie</string>
+    <string name="cat">Cat</string>
+    <string name="rabbit">Rabbit</string>
 </resources>
