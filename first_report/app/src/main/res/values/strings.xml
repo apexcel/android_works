@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">first_report</string>
+    <string name="qOne">Which class you study in?</string>
+    <string name="qTwo">Type in your name and studentID</string>
+    <string name="qthree">What is your cell phone manufacturer?</string>
+    <string name="qfour">How about the difficulty of class?</string>
+
+    <string name="name">최형욱</string>
+    <string name="stdID">201332020</string>
+    <string name="classA">Class A</string>
+    <string name="classB">Class B</string>
+    <string name="samsung">Samsung</string>
+    <string name="apple">Apple</string>
+    <string name="etcetra">ETC.</string>
+
+    <string name="easy">Easy</string>
+    <string name="normal">Normal</string>
+    <string name="hard">Hard</string>
+
+    <string name="confirm">Confirm</string>
+
+</resources>
