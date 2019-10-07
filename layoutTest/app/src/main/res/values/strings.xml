@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">layoutTest</string>
+    <string name="toTableExam">To Table Example</string>
+    <string name="toGridExam">To Grid Example</string>
+    <string name="num1">Input Number 1</string>
+    <string name="num2">Input Number 2</string>
+</resources>
