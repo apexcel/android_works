@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">myProject</string>
-    <string name="title">Title</string>
-    <string name="more">More</string>
-    <string name="reorder">Reorder</string>
-    <string name="search">Search</string>
-    <string name="testBtn">Test Button</string>
-</resources>

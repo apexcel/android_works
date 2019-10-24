@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -20,15 +19,16 @@ public class MainActivity extends AppCompatActivity {
 
     RadioButton rbuttonA;
     RadioButton rbuttonB;
-    TextView result;
     RadioButton rbuttonSamsung;
     RadioButton rbuttonApple;
     RadioButton rbuttonEtc;
     RadioButton rbuttonEasy;
     RadioButton rbuttonNormal;
     RadioButton rbuttonHard;
+
     ImageView myimg;
 
+    TextView result;
     String myStr;
     String myPhone;
     String myDiff;
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         final RadioGroup rOne = (RadioGroup) findViewById(R.id.radioGroup);
         final RadioGroup rTwo = (RadioGroup) findViewById(R.id.radioGroup2);
         final RadioGroup rThree = (RadioGroup) findViewById(R.id.radioGroup3);
-
 
         rbuttonA = (RadioButton) findViewById(R.id.rBtnA);
         rbuttonB = (RadioButton) findViewById(R.id.rBtnB);

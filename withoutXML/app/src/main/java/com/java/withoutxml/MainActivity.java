@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+        // setContentView(R.layout.activity_linear_test); XML 파일 설정하지 않도록 함
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -55,5 +55,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }

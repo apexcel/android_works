@@ -32,7 +32,7 @@ public class GridExam extends AppCompatActivity {
         tb.setTitle("Grid Layout");
 
         for (i = 0; i < numBtnsID.length; i++) { // 배열이용해서 할당
-            numBtns[i] = (Button) findViewById(numBtnsID[i]);
+            numBtns[i] = (Button) findViewById(numBtnsID[i]); // numBtns배열에 0 ~ 9까지 할당
         }
 
         for (i = 0; i < numBtnsID.length; i++) {
@@ -42,8 +42,9 @@ public class GridExam extends AppCompatActivity {
             numBtns[index].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (input1.isFocused()) {
+                    if (input1.isFocused()) { // input1이 포커스 되어 있다면
                         num1 = input1.getText().toString() + numBtns[index].getText().toString();
+                        // 문자열을 가져와서 String 끼리 결합하므로 문자열 결합이 된다
                         input1.setText(num1);
                     }
                     else if (input2.isFocused()) {
@@ -72,7 +73,7 @@ public class GridExam extends AppCompatActivity {
             public void onClick(View v) {
                 num1 = input1.getText().toString();
                 num2 = input2.getText().toString();
-                answerINT = Integer.parseInt(num1) + Integer.parseInt(num2);
+                answerINT = Integer.parseInt(num1) + Integer.parseInt(num2); // 받아온 숫자를 정수형으로 반환
                 answer.setText(answerINT.toString());
             }
         });

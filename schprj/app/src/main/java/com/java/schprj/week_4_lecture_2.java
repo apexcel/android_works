@@ -37,11 +37,6 @@ public class week_4_lecture_2 extends AppCompatActivity {
         Toolbar tb = (Toolbar) findViewById(R.id.appToolbar);
         setSupportActionBar(tb);
 
-        checkRadio.setVisibility(View.INVISIBLE);
-        radioGroup.setVisibility(View.INVISIBLE);
-        confirmAnimal.setVisibility(View.INVISIBLE);
-        imgView.setVisibility(View.INVISIBLE);
-
         Button backToMain = (Button) findViewById(R.id.backToMain);
         backToMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +45,12 @@ public class week_4_lecture_2 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        checkRadio.setVisibility(View.INVISIBLE);
+        radioGroup.setVisibility(View.INVISIBLE);
+        confirmAnimal.setVisibility(View.INVISIBLE);
+        imgView.setVisibility(View.INVISIBLE);
 
         checkBoxStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

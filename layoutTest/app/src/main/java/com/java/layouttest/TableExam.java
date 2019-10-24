@@ -24,10 +24,14 @@ public class TableExam extends AppCompatActivity {
     Toolbar tb;
     int i;
 
+    Button btn0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_exam);
+
+        btn0 = findViewById(R.id.btn0);
 
         tb = (Toolbar) findViewById(R.id.appBar);
         tb.setTitle("Table Layout");

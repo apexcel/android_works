@@ -10,8 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    Button btn, toTestBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +25,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar tb = (Toolbar) findViewById(R.id.appToolbar);
         setSupportActionBar(tb);
 
+        toTestBtn = (Button) findViewById(R.id.toTest);
+        toTestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), test.class);
+                startActivity(intent);
+            }
+        });
 
         Button toWeek4 = (Button) findViewById(R.id.toWeek4);
         toWeek4.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btn = (Button) findViewById(R.id.testOnClick);
+    }
+
+    public void toastClick(View v) {
+        Toast.makeText(getApplicationContext(), "Custom onClcik Event", Toast.LENGTH_LONG).show(); // 커스텀 onClick으로 XML과 연동하여 사용가능
     }
 
 }

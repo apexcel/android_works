@@ -17,12 +17,11 @@ public class week_4_lecture extends AppCompatActivity {
     String num1, num2;
     Integer intAnswer;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_week_4_lecture);
+
         editText1 = (EditText) findViewById(R.id.textFirst);
         editText2 = (EditText) findViewById(R.id.textSecond);
         answer = (TextView) findViewById(R.id.textView3);
@@ -71,6 +70,7 @@ public class week_4_lecture extends AppCompatActivity {
                 answer.setText("Answer : " + intAnswer.toString());
             }
         });
+
         Button backToMain = (Button) findViewById(R.id.backToMain);
         backToMain.setOnClickListener(new View.OnClickListener() {
             @Override

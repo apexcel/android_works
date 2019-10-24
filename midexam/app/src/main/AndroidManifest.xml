@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.java.schprj">
+    package="com.java.midexam">
 
     <application
         android:allowBackup="true"
@@ -9,16 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".test"></activity>
-        <activity android:name=".week_4_lecture_2" />
-        <activity android:name=".week_4_lecture" />
+        <activity android:name=".exam8"></activity>
+        <activity android:name=".exam7" />
+        <activity android:name=".exam6" />
+        <activity android:name=".exam5" />
+        <activity android:name=".exam4" />
+        <activity android:name=".exam3" />
+        <activity android:name=".exam2" />
+        <activity android:name=".exam1" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
