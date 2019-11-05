@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Practice</string>
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_close">Drawer Close</string>
+
+    <string name="avdClocks">Clocks</string>
+
+    <string name="toHome">Home</string>
+    <string name="adv1">Advanced Widget 1</string>
+    <string name="adv2">Advanced Widget 2</string>
+
+</resources>

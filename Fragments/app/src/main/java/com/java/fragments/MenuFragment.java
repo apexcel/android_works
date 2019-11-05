@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class MainFragment extends Fragment {
+public class MenuFragment extends Fragment {
 
     MainActivity activity;
 
@@ -32,13 +32,13 @@ public class MainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_menu, container, false);
 
-        Button button = (Button) rootView.findViewById(R.id.toMenu);
+        Button button = (Button) rootView.findViewById(R.id.toMain);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.onFragmentChange(1);
+                activity.onFragmentChange(0);
             }
         });
 

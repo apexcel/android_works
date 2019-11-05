@@ -1,4 +1,4 @@
-package com.java.fragments;
+package com.java.fragment2;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,34 +11,42 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class MainFragment extends Fragment {
+public class ListFragment extends Fragment {
 
     MainActivity activity;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
         activity = (MainActivity) getActivity();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        activity = null;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_list, container, false);
 
-        Button button = (Button) rootView.findViewById(R.id.toMenu);
+        Button button = (Button) rootView.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.onFragmentChange(1);
+                activity.onImgChange(0);
+            }
+        });
+
+        Button button2 = (Button) rootView.findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.onImgChange(1);
+            }
+        });
+
+        Button button3 = (Button) rootView.findViewById(R.id.button3);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.onImgChange(2);
             }
         });
 
