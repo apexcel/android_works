@@ -64,8 +64,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home: //reorder를 home으로 대체 했으므로 home으로 설정해야함
                 drawerLayout.openDrawer(Gravity.LEFT);
+                break;
             case R.id.tb_more:
                 Toast.makeText(this, "More selected", Toast.LENGTH_SHORT).show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
