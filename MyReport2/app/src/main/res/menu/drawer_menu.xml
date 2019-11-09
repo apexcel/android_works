@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/toDrawerHome"
+        android:title="Home"
+        />
+
+    <item
+        android:id="@+id/toReport"
+        android:title="Report"
+        />
+
+    <item
+        android:id="@+id/toDrawerItem1"
+        android:title="Drawer Item 1"
+        />
+
+    <item
+        android:id="@+id/toDrawerItem2"
+        android:title="Drawer Item 2"
+        />
+
+    <item
+        android:id="@+id/toDrawerItem3"
+        android:title="Drawer Item 3"
+        />
+
+</menu>
