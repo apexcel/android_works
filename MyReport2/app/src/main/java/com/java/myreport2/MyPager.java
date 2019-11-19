@@ -1,5 +1,8 @@
 package com.java.myreport2;
 
+import android.content.Context;
+import android.widget.AdapterView;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -10,6 +13,7 @@ import com.google.android.material.tabs.TabItem;
 public class MyPager extends FragmentStatePagerAdapter {
 
     private int pageCounter;
+    private AdapterView.OnItemClickListener myOnItemClickListener;
 
     public MyPager(FragmentManager fm, int pageCounter) {
         super(fm);

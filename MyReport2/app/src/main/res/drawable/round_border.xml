@@ -9,5 +9,4 @@
         android:gradientRadius="8dp"
         android:endColor="#ffffff"
         />
-
 </shape>
