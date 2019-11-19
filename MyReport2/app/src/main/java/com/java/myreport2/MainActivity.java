@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     FragDrawer2 fragDrawer2;
     FragDrawer3 fragDrawer3;
 
+    TextView intro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +51,11 @@ public class MainActivity extends AppCompatActivity {
         fragDrawer2 = new FragDrawer2();
         fragDrawer3 = new FragDrawer3();
 
+        intro = (TextView) findViewById(R.id.intro);
+
         tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
-        getSupportActionBar().setTitle("Main");
+        getSupportActionBar().setTitle("201332020_최형욱");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 액션바 홈아이콘 활성화
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_reorder_24px); // 홈 아이콘 변경
     }
@@ -89,12 +93,15 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(reportIntent);
                 case R.id.toDrawerItem1:
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragDrawer1).commit();
+                    intro.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.toDrawerItem2:
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragDrawer2).commit();
+                    intro.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.toDrawerItem3:
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragDrawer3).commit();
+                    intro.setVisibility(View.INVISIBLE);
                     break;
             }
             drawerLayout.closeDrawers();

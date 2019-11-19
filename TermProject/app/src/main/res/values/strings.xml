@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Term_Project</string>
+    <string name="str_confirm">확인</string>
+    <string name="str_cancel">취소</string>
+
+    <string name="create_folder">폴더 추가하기</string>
+    <string name="create_word">단어 추가하기</string>
+
+    <string name="input_folder_name">폴더 이름</string>
+</resources>

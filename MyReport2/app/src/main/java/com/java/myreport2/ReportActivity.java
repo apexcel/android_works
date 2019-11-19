@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 
