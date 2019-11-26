@@ -8,6 +8,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
@@ -67,19 +68,26 @@ public class MainActivity extends AppCompatActivity {
     // 프래그먼트
     FragmentWebView fragmentWebView;
 
+    // 프래그먼트 동적 추가
+    // TODO: 동적 프래그먼트 추가를 함수로 구현해서 폴더 생성시 같이 프래그먼트 생성하도록 하기
+    static final String FRAGMENT_TAG = "FRAGMENT_TAG";
+    static final String KEYS = "KEYS";
+    int fragmentCounter = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         initializeLayout();
         initializeBottomNav();
         requestPermission();
         refreshFolder();
+        listViewAddDelete();
 
     }
 
+    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 권한 요청
     public void requestPermission() {
         int permissionReadStrage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -99,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 권한 요청 받기
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -118,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 툴바 및 기타 초기화
     public void initializeLayout() {
 
@@ -136,21 +145,14 @@ public class MainActivity extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selectedFolderList);
         listView.setAdapter(arrayAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, selectedFolderList.get(position).toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
         fragmentWebView = new FragmentWebView();
 
         for (int i = 0; i < fileList.length; i++) {
             folderList.add(fileList[i].getName());
         }
-
     }
 
+    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 하단 탭 네비게이션 초기화
     public void initializeBottomNav() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -181,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 팝업 메뉴 클릭 커스텀 이벤트
     PopupMenu.OnMenuItemClickListener mPopupMenuClick = new PopupMenu.OnMenuItemClickListener() {
         @Override
@@ -194,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 다이얼로그 띄우고 폴더 생성
     private void addFolder() {
         final EditText folderName = new EditText(this);
@@ -209,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 String name = folderName.getText().toString();
                 final File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), name);
 
+                // TODO: 폴더 생성시 같이 동적 프래그먼트 추가하도록 하기
                 if (!dir.exists()) { // dir가 존재 하지 않으면 생성
                     dir.mkdir();
                     folderList.add(folderCounter, name);
@@ -244,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 폴더 불러오기
     public void refreshFolder() {
 
@@ -254,6 +260,71 @@ public class MainActivity extends AppCompatActivity {
             else {
             }
         }
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------------------------
+    // 프래그먼트 동적 추가
+    private FragmentManager.OnBackStackChangedListener myBackstackListener = new FragmentManager.OnBackStackChangedListener() {
+        @Override
+        public void onBackStackChanged() {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            int count = 0;
+            for (Fragment f: fragmentManager.getFragments()) {
+                if (f != null) {
+                    count++;
+                }
+            }
+            fragmentCounter = count;
+            Log.d("MainActivity", "onBackStackChanged fragmentCounter = " + fragmentCounter);
+        }
+    };
+
+    //---------------------------------------------------------------------------------------------------------------------------------------------
+    // 리스트뷰 클릭시 폴더 삭제와 접속 이벤트
+    public void listViewAddDelete() {
+
+        // 폴더 리스트 클릭시 이벤트
+        // TODO: 프래그먼트 동적 추가 구현한 뒤 리스트 클릭시 해당 프래그먼트로 이동하게 만들기, 해당 부분은 이동 부분
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, selectedFolderList.get(position).toString(), Toast.LENGTH_SHORT).show();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                //fragmentManager.beginTransaction().add(R.id.main_container, Fragment.getInstance(fragmentCounter)).addToBackStack().commit();
+            }
+        });
+
+        // 중복 제거된 폴더 리스트 길게 클릭시 삭제 이벤트
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("정말로 폴더를 삭제 하시겠어요?");
+                builder.setPositiveButton(R.string.str_confirm, new DialogInterface.OnClickListener() { // 확인
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int _position = position;
+                        String name = selectedFolderList.get(_position);
+                        final File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), name);
+                        if (dir.exists()) {
+                            dir.delete();
+                            selectedFolderList.remove(_position);
+                            arrayAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+                builder.setNegativeButton(R.string.str_cancel, new DialogInterface.OnClickListener() { // 취소
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.show();
+
+                return true;
+            }
+        });
     }
 
 }
