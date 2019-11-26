@@ -27,6 +27,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,25 +52,31 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    // 툴바
     Toolbar tb;
 
+    // 폴더 리스트
     ListView listView;
-    ArrayList<String> arrayList; // 폴더
-    ArrayAdapter<String> arrayAdapter;
+    ArrayList<String> folderList; // 폴더 리스트
+    ArrayList<String> selectedFolderList; // 중복 제거 폴더 리스트
+    ArrayAdapter<String> arrayAdapter; // 폴더 리스트 어댑터
     ArrayList<HashMap<String, String>> itemlist; // 단어
-    HashMap<String, String> hashMap = new HashMap<>();
+    HashMap<String, String> hashMap = new HashMap<>(); // 단어 해쉬맵
+    int folderCounter = 0; // 폴더 개수
 
-    int counter = 0;
+    // 프래그먼트
+    FragmentWebView fragmentWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         initializeLayout();
         initializeBottomNav();
         requestPermission();
-        isExistFolder("");
+        refreshFolder();
 
     }
 
@@ -74,14 +84,18 @@ public class MainActivity extends AppCompatActivity {
     public void requestPermission() {
         int permissionReadStrage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         int permissionWriteStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionInternet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
 
         // 권한이 있으면 PERMISSION_GRANTED 반환 없으면 PERMISSION_DENIED 반환
-        if (permissionWriteStorage == PackageManager.PERMISSION_GRANTED && permissionReadStrage == PackageManager.PERMISSION_GRANTED) {
+        if (permissionWriteStorage == PackageManager.PERMISSION_GRANTED
+                && permissionReadStrage == PackageManager.PERMISSION_GRANTED
+                && permissionInternet == PackageManager.PERMISSION_GRANTED) {
 
         }
         else {
                 ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, 3);
         }
     }
 
@@ -111,10 +125,29 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(tb);
         getSupportActionBar().setTitle("Home");
 
+        String rootDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+        File file = new File(rootDir);
+        File[] fileList = file.listFiles();
+
+
         listView = (ListView) findViewById(R.id.list_view);
-        arrayList = new ArrayList<String>();
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
+        folderList = new ArrayList<>();
+        selectedFolderList = new ArrayList<>();
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selectedFolderList);
         listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, selectedFolderList.get(position).toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        fragmentWebView = new FragmentWebView();
+
+        for (int i = 0; i < fileList.length; i++) {
+            folderList.add(fileList[i].getName());
+        }
 
     }
 
@@ -126,12 +159,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_home:
-                        //Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
                         getSupportActionBar().setTitle("Home");
-                        //startActivity(homeIntent);
+                        startActivity(homeIntent);
                         return true;
                     case R.id.menu_search:
                         getSupportActionBar().setTitle("Search");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, fragmentWebView).commit();
                         return true;
                     case R.id.menu_edit:
                         PopupMenu popupMenu = new PopupMenu(getApplicationContext(), getWindow().getDecorView().getRootView().findViewById(R.id.menu_edit));
@@ -155,8 +189,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.create_folder:
                     addFolder();
                     return true;
-                case R.id.create_word:
-                    return true;
             }
             return false;
         }
@@ -179,13 +211,13 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!dir.exists()) { // dir가 존재 하지 않으면 생성
                     dir.mkdir();
-                    arrayList.add(counter, name);
-                    counter++;
-                    isExistFolder(name);
+                    folderList.add(folderCounter, name);
+                    folderCounter++;
+                    refreshFolder();
                 }
                 else { // 이미 존재
                     Toast.makeText(MainActivity.this, "이미 동일한 이름의 폴더가 존재합니다.", Toast.LENGTH_LONG).show();
-                    isExistFolder(name);
+                    refreshFolder();
                 }
             }
         });
@@ -213,24 +245,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 폴더 불러오기
-    public void isExistFolder(String name) {
-        String rootDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        File file = new File(rootDir);
-        File[] fileList = file.listFiles();
+    public void refreshFolder() {
 
-        List<String> fileNameList = new ArrayList<>();
-
-            for (int i = 0; i < fileList.length; i++) {
-                fileNameList.add(fileList[i].getName());
-
-                if (name.equals("")) {
-                    Toast.makeText(this, "폴더 불러오기" + fileList[i].getName(), Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    arrayList.add(fileList[i].getName());
-                    counter++;
-                    Toast.makeText(this, counter + "이다", Toast.LENGTH_SHORT).show();
-                }
+        for (int i = 0; i < folderList.size(); i++) {
+            if (!selectedFolderList.contains(folderList.get(i))) {
+                selectedFolderList.add(folderList.get(i));
             }
+            else {
+            }
+        }
     }
+
 }
