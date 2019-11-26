@@ -1,14 +1,23 @@
 package com.java.termproject;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class FragmentDynamic extends Fragment {
 
@@ -30,7 +39,17 @@ public class FragmentDynamic extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = (View) inflater.inflate(R.layout.fragment_dynamic, container, false);
+        final View rootView = (View) inflater.inflate(R.layout.fragment_dynamic, container, false);
+        Button addBtn = (Button) rootView.findViewById(R.id.add_word);
+        Button deleteBtn = (Button) rootView.findViewById(R.id.delete_word);
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         return rootView;
 
     }
@@ -50,4 +69,6 @@ public class FragmentDynamic extends Fragment {
         String text = "" + no + " Fragment";
         textView.setText(text);
     }
+
+
 }

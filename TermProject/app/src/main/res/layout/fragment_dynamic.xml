@@ -1,62 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:id="@+id/words_container">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/add_word"
+            android:text="Add Word"
             android:textColor="@color/colorBlack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="5dp"
-            android:text="단어 추가"
             />
+
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/delete_word"
+            android:text="Delete Word"
             android:textColor="@color/colorBlack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="5dp"
-            android:text="단어 삭제"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorBlack"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:text="단어 연습"
             />
 
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/text_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="This is TextView"
-        android:textSize="40sp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        />
+        android:layout_weight="1"
+        >
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
-    <EditText
-        android:hint="단어"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        <TextView
+            android:id="@+id/show_word"
+            android:text="showWord"
+            android:textSize="40sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"/>
 
-    <EditText
-        android:hint="뜻"
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:layout_weight="1"
+        >
+
+        <TextView
+            android:id="@+id/show_meaing"
+            android:text="showText"
+            android:textSize="40sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
 
 
 </LinearLayout>

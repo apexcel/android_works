@@ -4,10 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -47,10 +45,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOError;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.List;
+import java.io.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,8 +63,10 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> folderList; // 폴더 리스트
     ArrayList<String> selectedFolderList; // 중복 제거 폴더 리스트
     ArrayAdapter<String> arrayAdapter; // 폴더 리스트 어댑터
-    ArrayList<HashMap<String, String>> itemlist; // 단어
-    HashMap<String, String> hashMap = new HashMap<>(); // 단어 해쉬맵
+
+    // 단어
+    ArrayList<String> word;
+    ArrayList<String> meaning;
 
     // 프래그먼트
     FragmentWebView fragmentWebView;
@@ -90,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.addOnBackStackChangedListener(myBackstackListener);
         Fragment fragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
         Log.d("MainActivity", "initDynamicFragment = "+ fragment + "fragmentCounter = " + fragmentCounter);
-        if (savedInstanceState == null) {
-            //fragmentManager.beginTransaction().replace(R.id.main_container, FragmentDynamic.getInstance(fragmentCounter), FRAGMENT_TAG).addToBackStack(null).commit();
+        if (savedInstanceState != null) {
+            fragmentManager.beginTransaction().replace(R.id.main_container, FragmentDynamic.getInstance(fragmentCounter), FRAGMENT_TAG).addToBackStack(null).commit();
         }
 
     }
@@ -239,18 +242,22 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.str_confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String name = folderName.getText().toString();
-                final File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), name);
+                String _folderName = folderName.getText().toString();
+                String _fileName = _folderName;
+                String _folderPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + _folderName;
+                final File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), _folderName);
 
                 // TODO: 폴더 생성시 같이 동적 프래그먼트 추가하도록 하기, 동적 추가 함수 받아서 실행하도록 하기
                 if (!dir.exists()) { // dir가 존재 하지 않으면 생성
                     dir.mkdir();
-                    folderList.add(name);
+                    folderList.add(_folderName);
+                    writeTextFile(_folderPath, _fileName, "Word|Meaing/Word2|Meaning2/");
                     dynamicFragmentAdding();
                     refreshFolder();
                 }
                 else { // 이미 존재
                     Toast.makeText(MainActivity.this, "이미 동일한 이름의 폴더가 존재합니다.", Toast.LENGTH_LONG).show();
+                    dynamicFragmentDelete();
                     refreshFolder();
                 }
             }
@@ -265,6 +272,22 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    // 텍스트 파일 생성
+    public void writeTextFile(String folderPath, String fileName, String data) { // 폴더 path와 파일 이름, 데이터를 받아옴
+
+        File textFile = new File(folderPath + "/" + fileName + ".txt");
+
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(folderPath + "/" + fileName + ".txt", true));
+            bufferedWriter.write(data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     //---------------------------------------------------------------------------------------------------------------------------------------------
     // 폴더 불러오기
     public void refreshFolder() {
@@ -276,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
             else {
             }
         }
+        arrayAdapter.notifyDataSetChanged();
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------------------
@@ -317,6 +341,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, selectedFolderList.get(position) + ", " + position, Toast.LENGTH_SHORT).show();
+                getSupportActionBar().setTitle(selectedFolderList.get(position));
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_container, FragmentDynamic.getInstance(position), FRAGMENT_TAG);
             }
         });
@@ -334,11 +359,16 @@ public class MainActivity extends AppCompatActivity {
                         int _position = position;
                         String name = selectedFolderList.get(_position);
                         final File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), name);
+                        File[] childFiles = dir.listFiles();
+
                         if (dir.exists()) {
+                            for (File child : childFiles) {
+                                child.delete();
+                            }
                             dir.delete();
                             selectedFolderList.remove(_position);
-                            dynamicFragmentDelete();
                             arrayAdapter.notifyDataSetChanged();
+                            getSupportActionBar().setTitle("Home");
                         }
                     }
                 });
@@ -354,5 +384,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    // 문자열 구분 함수
+    public void inspectWord(String line) {
 
+        String temp = "";
+        for (int i = 0; i < line.length(); i++) {
+            if (!String.valueOf('|').equals(String.valueOf(line.charAt(i))) && !String.valueOf('/').equals(String.valueOf(line.charAt(i)))) {
+                temp += line.charAt(i);
+            }
+            else if(String.valueOf('|').equals(String.valueOf(line.charAt(i)))) {
+                word.add(temp);
+                temp = "";
+            }
+            else if (String.valueOf('/').equals(String.valueOf(line.charAt(i)))) {
+                meaning.add(temp);
+                temp = "";
+            }
+        }
+    }
+
+    // 파일 불러오기
+    public String readTextFile(String path) {
+        StringBuffer stringBuffer = new StringBuffer();
+
+        try {
+            InputStream inputStream = new FileInputStream(path);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String _word = "";
+            while ((_word = bufferedReader.readLine()) != null) {
+                stringBuffer.append(_word +"\n");
+            }
+            bufferedReader.close();
+            inputStream.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+        return stringBuffer.toString();
+    }
 }
