@@ -3,14 +3,60 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:text="단어 추가"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:text="단어 삭제"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="단어 연습"
+            />
+
+    </LinearLayout>
+
+
     <TextView
         android:id="@+id/text_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Dynamic Fragment"
+        android:layout_height="wrap_content"
+        android:text="This is TextView"
         android:textSize="40sp"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         />
+
+    <EditText
+        android:hint="단어"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <EditText
+        android:hint="뜻"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
 
 </LinearLayout>

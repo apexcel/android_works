@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter; // 폴더 리스트 어댑터
     ArrayList<HashMap<String, String>> itemlist; // 단어
     HashMap<String, String> hashMap = new HashMap<>(); // 단어 해쉬맵
-    int folderCounter = 0; // 폴더 개수
 
     // 프래그먼트
     FragmentWebView fragmentWebView;
@@ -91,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.addOnBackStackChangedListener(myBackstackListener);
         Fragment fragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
         Log.d("MainActivity", "initDynamicFragment = "+ fragment + "fragmentCounter = " + fragmentCounter);
-        //if (savedInstanceState == null) {
-          //  fragmentManager.beginTransaction().add(R.id.main_container, FragmentDynamic.getInstance(fragmentCounter), FRAGMENT_TAG).addToBackStack(null).commit();
-        //}
+        if (savedInstanceState == null) {
+            //fragmentManager.beginTransaction().replace(R.id.main_container, FragmentDynamic.getInstance(fragmentCounter), FRAGMENT_TAG).addToBackStack(null).commit();
+        }
 
     }
 
@@ -179,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < fileList.length; i++) {
             folderList.add(fileList[i].getName());
         }
+
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------------------
@@ -245,8 +245,7 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: 폴더 생성시 같이 동적 프래그먼트 추가하도록 하기, 동적 추가 함수 받아서 실행하도록 하기
                 if (!dir.exists()) { // dir가 존재 하지 않으면 생성
                     dir.mkdir();
-                    folderList.add(folderCounter, name);
-                    folderCounter++;
+                    folderList.add(name);
                     dynamicFragmentAdding();
                     refreshFolder();
                 }
@@ -317,7 +316,8 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, selectedFolderList.get(position).toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, selectedFolderList.get(position) + ", " + position, Toast.LENGTH_SHORT).show();
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_container, FragmentDynamic.getInstance(position), FRAGMENT_TAG);
             }
         });
 
@@ -337,6 +337,7 @@ public class MainActivity extends AppCompatActivity {
                         if (dir.exists()) {
                             dir.delete();
                             selectedFolderList.remove(_position);
+                            dynamicFragmentDelete();
                             arrayAdapter.notifyDataSetChanged();
                         }
                     }
