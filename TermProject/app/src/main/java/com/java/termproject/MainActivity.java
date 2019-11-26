@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     // TODO: 동적 프래그먼트 추가를 함수로 구현해서 폴더 생성시 같이 프래그먼트 생성하도록 하기
     static final String FRAGMENT_TAG = "FRAGMENT_TAG";
     static final String KEYS = "KEYS";
-    int fragmentCounter = 0;
+    private int fragmentCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,34 @@ public class MainActivity extends AppCompatActivity {
         refreshFolder();
         listViewAddDelete();
 
+        // 프래그먼트 동적추가
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(myBackstackListener);
+        Fragment fragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
+        Log.d("MainActivity", "initDynamicFragment = "+ fragment + "fragmentCounter = " + fragmentCounter);
+        //if (savedInstanceState == null) {
+          //  fragmentManager.beginTransaction().add(R.id.main_container, FragmentDynamic.getInstance(fragmentCounter), FRAGMENT_TAG).addToBackStack(null).commit();
+        //}
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.removeOnBackStackChangedListener(myBackstackListener);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putInt(KEYS, fragmentCounter);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
+        fragmentCounter = savedInstanceState.getInt(KEYS);
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------------------
@@ -203,8 +232,8 @@ public class MainActivity extends AppCompatActivity {
         final EditText folderName = new EditText(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("단어장 폴더 생성");
-        builder.setMessage("단어장 폴더의 이름을 입력하세요.");
+        builder.setTitle("단어장 폴더 추가");
+        builder.setMessage("폴더의 이름을 입력하세요.");
         builder.setView(folderName);
 
         builder.setPositiveButton(R.string.str_confirm, new DialogInterface.OnClickListener() {
@@ -213,11 +242,12 @@ public class MainActivity extends AppCompatActivity {
                 String name = folderName.getText().toString();
                 final File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), name);
 
-                // TODO: 폴더 생성시 같이 동적 프래그먼트 추가하도록 하기
+                // TODO: 폴더 생성시 같이 동적 프래그먼트 추가하도록 하기, 동적 추가 함수 받아서 실행하도록 하기
                 if (!dir.exists()) { // dir가 존재 하지 않으면 생성
                     dir.mkdir();
                     folderList.add(folderCounter, name);
                     folderCounter++;
+                    dynamicFragmentAdding();
                     refreshFolder();
                 }
                 else { // 이미 존재
@@ -233,19 +263,6 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         });
-
-
-        /* 실제 폴더 생성 관련
-                File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), wordInput.getText().toString());
-                if (!dir.mkdir()) {
-                    Toast.makeText(MainActivity.this, "폴더 생성 실패", Toast.LENGTH_SHORT).show();
-                    Log.d("TAG", "---- 폴더 생성 실패 ----");
-                }
-                else {
-                    Toast.makeText(MainActivity.this, wordInput.getText().toString() + " 폴더가 생성되었습니다", Toast.LENGTH_SHORT).show();
-                }
-                 */
-
         builder.show();
     }
 
@@ -263,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------------------
-    // 프래그먼트 동적 추가
+    // TODO: 프래그먼트 동적 추가
     private FragmentManager.OnBackStackChangedListener myBackstackListener = new FragmentManager.OnBackStackChangedListener() {
         @Override
         public void onBackStackChanged() {
@@ -279,6 +296,18 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    // 프래그먼트 동적 추가
+    public void dynamicFragmentAdding() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.main_container, FragmentDynamic.getInstance(fragmentCounter)).addToBackStack(null).commit();
+    }
+
+    // 프래그먼트 동적 삭제
+    public void dynamicFragmentDelete() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStack();
+    }
+
     //---------------------------------------------------------------------------------------------------------------------------------------------
     // 리스트뷰 클릭시 폴더 삭제와 접속 이벤트
     public void listViewAddDelete() {
@@ -289,8 +318,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, selectedFolderList.get(position).toString(), Toast.LENGTH_SHORT).show();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                //fragmentManager.beginTransaction().add(R.id.main_container, Fragment.getInstance(fragmentCounter)).addToBackStack().commit();
             }
         });
 
