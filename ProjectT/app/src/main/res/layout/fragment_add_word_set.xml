@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="WORD SET NAME"
+        android:textSize="30sp"
+        />
+
+    <EditText
+        android:id="@+id/word_set_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="WORD"
+        android:textSize="30sp"
+        />
+
+    <EditText
+        android:id="@+id/word_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="MEANING"
+        android:textSize="30sp"
+        />
+
+    <EditText
+        android:id="@+id/meaning_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <Button
+        android:id="@+id/add_word_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="단어추가"
+        />
+
+    <Button
+        android:id="@+id/save_word_set_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="저장하기"
+        />
+
+</LinearLayout>

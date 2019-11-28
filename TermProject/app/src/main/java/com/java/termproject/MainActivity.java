@@ -72,13 +72,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> meaning;
 
     // 프래그먼트
-    FragmentWebView fragmentWebView;
+    FragmentWebView fragmentWebView = new FragmentWebView();
+    DynamicFragment dynamicFragment = new DynamicFragment();
 
-    // 프래그먼트 동적 추가
-    // TODO: 동적 프래그먼트 추가를 함수로 구현해서 폴더 생성시 같이 프래그먼트 생성하도록 하기
-    static final String FRAGMENT_TAG = "FRAGMENT_TAG";
-    static final String KEYS = "KEYS";
-    private int fragmentCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,38 +87,9 @@ public class MainActivity extends AppCompatActivity {
         refreshFolder();
         listViewAddDelete();
 
-        // 프래그먼트 동적추가
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.addOnBackStackChangedListener(myBackstackListener);
-        Fragment fragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
-        Log.d("MainActivity", "initDynamicFragment = "+ fragment + "fragmentCounter = " + fragmentCounter);
-        if (savedInstanceState != null) {
-            fragmentManager.beginTransaction().replace(R.id.main_container, FragmentDynamic.getInstance(fragmentCounter), FRAGMENT_TAG).addToBackStack(null).commit();
-        }
-
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.removeOnBackStackChangedListener(myBackstackListener);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        outState.putInt(KEYS, fragmentCounter);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onRestoreInstanceState(savedInstanceState, persistentState);
-        fragmentCounter = savedInstanceState.getInt(KEYS);
-    }
-
-    //---------------------------------------------------------------------------------------------------------------------------------------------
-    // 권한 요청
+    // 권한요청
     public void requestPermission() {
         int permissionReadStrage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         int permissionWriteStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -141,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 권한 요청 받기
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -157,18 +123,15 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "권한이 필요합니다.", Toast.LENGTH_SHORT).show();
                 }
             }
-
     }
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------
-    // 툴바 및 기타 초기화
+    // 툴바 및 레이아웃 초기화
     public void initializeLayout() {
 
         tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
         getSupportActionBar().setTitle("Home");
-        //TODO: 폴더 추가, 파일 추가 부분 액션바로 옮기기
-        //TODO: 하단 공부 탭 부분을 새로운 액티비티로 이용
+
         String rootDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
         File file = new File(rootDir);
         File[] fileList = file.listFiles();
@@ -180,15 +143,12 @@ public class MainActivity extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selectedFolderList);
         listView.setAdapter(arrayAdapter);
 
-        fragmentWebView = new FragmentWebView();
-
         for (int i = 0; i < fileList.length; i++) {
             folderList.add(fileList[i].getName());
         }
 
     }
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 하단 탭 네비게이션 초기화
     public void initializeBottomNav() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -219,8 +179,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------
-    // 팝업 메뉴 클릭 커스텀 이벤트
+    // 팝업 메뉴 클릭 이벤트
     PopupMenu.OnMenuItemClickListener mPopupMenuClick = new PopupMenu.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
@@ -235,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 다이얼로그 띄우고 폴더 생성
     private void addFolder() {
         final EditText folderName = new EditText(this);
@@ -253,17 +211,13 @@ public class MainActivity extends AppCompatActivity {
                 String _folderPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + _folderName;
                 final File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), _folderName);
 
-                // TODO: 폴더 생성시 같이 동적 프래그먼트 추가하도록 하기, 동적 추가 함수 받아서 실행하도록 하기
                 if (!dir.exists()) { // dir가 존재 하지 않으면 생성
                     dir.mkdir();
                     folderList.add(_folderName);
-                    makeTextFile(_folderPath, _fileName);
-                    dynamicFragmentAdding();
                     refreshFolder();
                 }
                 else { // 이미 존재
                     Toast.makeText(MainActivity.this, "이미 동일한 이름의 폴더가 존재합니다.", Toast.LENGTH_LONG).show();
-                    dynamicFragmentDelete();
                     refreshFolder();
                 }
             }
@@ -278,12 +232,6 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    // 단어 세트 생성
-    public void addWordSet() {
-
-    }
-
-    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 텍스트 파일 생성
     public void makeTextFile(String folderPath, String fileName) { // 폴더 path와 파일 이름, 데이터를 받아옴
 
@@ -313,34 +261,6 @@ public class MainActivity extends AppCompatActivity {
         arrayAdapter.notifyDataSetChanged();
     }
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------
-    // TODO: 프래그먼트 동적 추가
-    private FragmentManager.OnBackStackChangedListener myBackstackListener = new FragmentManager.OnBackStackChangedListener() {
-        @Override
-        public void onBackStackChanged() {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            int count = 0;
-            for (Fragment f: fragmentManager.getFragments()) {
-                if (f != null) {
-                    count++;
-                }
-            }
-            fragmentCounter = count;
-            Log.d("MainActivity", "onBackStackChanged fragmentCounter = " + fragmentCounter);
-        }
-    };
-
-    // 프래그먼트 동적 추가
-    public void dynamicFragmentAdding() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.main_container, FragmentDynamic.getInstance(fragmentCounter)).addToBackStack(null).commit();
-    }
-
-    // 프래그먼트 동적 삭제
-    public void dynamicFragmentDelete() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStack();
-    }
 
     //---------------------------------------------------------------------------------------------------------------------------------------------
     // 리스트뷰 클릭시 폴더 삭제와 접속 이벤트
@@ -352,9 +272,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, selectedFolderList.get(position) + ", " + position, Toast.LENGTH_SHORT).show();
-                dynamicFragmentAdding();
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_container, dynamicFragment).commit();
                 getSupportActionBar().setTitle(selectedFolderList.get(position));
-                getSupportFragmentManager().beginTransaction().replace(R.id.main_container, FragmentDynamic.getInstance(position), FRAGMENT_TAG);
             }
         });
 
