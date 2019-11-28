@@ -8,6 +8,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
 import android.app.Activity;
@@ -164,7 +167,8 @@ public class MainActivity extends AppCompatActivity {
         tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
         getSupportActionBar().setTitle("Home");
-
+        //TODO: 폴더 추가, 파일 추가 부분 액션바로 옮기기
+        //TODO: 하단 공부 탭 부분을 새로운 액티비티로 이용
         String rootDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
         File file = new File(rootDir);
         File[] fileList = file.listFiles();
@@ -221,8 +225,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.create_folder:
+                case R.id.create_folder: // 폴더 생성
                     addFolder();
+                    return true;
+                case R.id.create_word_set: // 단어 세트 생성
                     return true;
             }
             return false;
@@ -251,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!dir.exists()) { // dir가 존재 하지 않으면 생성
                     dir.mkdir();
                     folderList.add(_folderName);
-                    writeTextFile(_folderPath, _fileName, "Word|Meaing/Word2|Meaning2/");
+                    makeTextFile(_folderPath, _fileName);
                     dynamicFragmentAdding();
                     refreshFolder();
                 }
@@ -272,14 +278,19 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    // 단어 세트 생성
+    public void addWordSet() {
+
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------------------------
     // 텍스트 파일 생성
-    public void writeTextFile(String folderPath, String fileName, String data) { // 폴더 path와 파일 이름, 데이터를 받아옴
+    public void makeTextFile(String folderPath, String fileName) { // 폴더 path와 파일 이름, 데이터를 받아옴
 
         File textFile = new File(folderPath + "/" + fileName + ".txt");
 
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(folderPath + "/" + fileName + ".txt", true));
-            bufferedWriter.write(data);
             bufferedWriter.flush();
             bufferedWriter.close();
         }
@@ -341,6 +352,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, selectedFolderList.get(position) + ", " + position, Toast.LENGTH_SHORT).show();
+                dynamicFragmentAdding();
                 getSupportActionBar().setTitle(selectedFolderList.get(position));
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_container, FragmentDynamic.getInstance(position), FRAGMENT_TAG);
             }

@@ -34,46 +34,11 @@
 
     </LinearLayout>
 
-
-    <LinearLayout
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        >
-        <TextView
-            android:id="@+id/text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/show_word"
-            android:text="showWord"
-            android:textSize="40sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_horizontal"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        >
-
-        <TextView
-            android:id="@+id/show_meaing"
-            android:text="showText"
-            android:textSize="40sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_horizontal"/>
-
-    </LinearLayout>
-
-
+    </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>

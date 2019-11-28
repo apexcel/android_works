@@ -6,4 +6,8 @@
         android:title="@string/create_folder"
         />
 
+    <item
+        android:id="@+id/create_word_set"
+        android:title="@string/create_word_set"
+        />
 </menu>
