@@ -47,7 +47,7 @@ public class AddWordSetFragment extends Fragment {
                     MyValues.wordSetName = wordSetName.getText().toString();
                 }
                 else {
-                    Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), "값을 입력하세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(((MainActivity)getActivity()), "값을 입력하세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -60,10 +60,10 @@ public class AddWordSetFragment extends Fragment {
                     word.setText("");
                     mean.setText("");
 
-                    Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), "단어가 추가 되었습니다. 다음 단어를 입력하세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(((MainActivity)getActivity()), "단어가 추가 되었습니다. 다음 단어를 입력하세요", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), "값을 모두 입력하세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(((MainActivity)getActivity()), "값을 모두 입력하세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });

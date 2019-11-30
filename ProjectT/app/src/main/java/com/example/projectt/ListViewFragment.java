@@ -35,6 +35,7 @@ public class ListViewFragment extends Fragment {
     ArrayList<String> tempFileList;
     ArrayAdapter<String> arrayAdapter;
     AddWordSetFragment addWordSetFragment;
+    ViewPagerFragment viewPagerFragment;
 
     String param1;
     String param2;
@@ -50,7 +51,7 @@ public class ListViewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = (View) inflater.inflate(R.layout.fragment_list_view, null);
+        final View rootView = (View) inflater.inflate(R.layout.fragment_list_view, null);
 
 
         if (!MyValues.lines.equals("") && !MyValues.wordSetName.equals("")) {
@@ -60,6 +61,7 @@ public class ListViewFragment extends Fragment {
         Toast.makeText(((MainActivity)getActivity()).getApplicationContext(), MyValues.lines, Toast.LENGTH_SHORT).show();
 
         addWordSetFragment = new AddWordSetFragment();
+        viewPagerFragment = new ViewPagerFragment();
 
         String rootDir = MyValues.path;
         File files = new File(rootDir);
@@ -89,6 +91,8 @@ public class ListViewFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 parent.getItemAtPosition(position);
                 Toast.makeText(getActivity(), ""+parent.getItemIdAtPosition(position), Toast.LENGTH_SHORT).show();
+                ((MainActivity) getActivity()).getSupportActionBar().setTitle(parent.getItemAtPosition(position).toString().replace(".txt", ""));
+                ((MainActivity) getActivity()).replaceFragment(viewPagerFragment);
             }
         });
 
