@@ -1,8 +1,10 @@
 package com.example.projectt;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ListViewFragment extends Fragment {
 
@@ -91,6 +95,7 @@ public class ListViewFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 parent.getItemAtPosition(position);
                 Toast.makeText(getActivity(), ""+parent.getItemIdAtPosition(position), Toast.LENGTH_SHORT).show();
+                MyValues.tempFileName = parent.getItemAtPosition(position).toString();
                 ((MainActivity) getActivity()).getSupportActionBar().setTitle(parent.getItemAtPosition(position).toString().replace(".txt", ""));
                 ((MainActivity) getActivity()).replaceFragment(viewPagerFragment);
             }
@@ -102,6 +107,8 @@ public class ListViewFragment extends Fragment {
                 int i = (int)parent.getItemIdAtPosition(position);
                 String name = fileList.get(i);
                 File temp = new File(MyValues.path, name);
+                MyValues.wordSetName = "";
+                MyValues.lines = "";
                 temp.delete();
                 Snackbar.make(getActivity().findViewById(android.R.id.content), name + " 삭제되었습니다.", Snackbar.LENGTH_LONG).show();
 
@@ -114,6 +121,13 @@ public class ListViewFragment extends Fragment {
                 }
                 arrayAdapter.notifyDataSetChanged();
 
+                new android.os.Handler().postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                Intent homeIntent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                                startActivity(homeIntent);
+                            }
+                        }, 2000);
                 return true;
             }
         });

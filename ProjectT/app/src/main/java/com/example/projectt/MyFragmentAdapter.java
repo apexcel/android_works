@@ -14,7 +14,8 @@ public class MyFragmentAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return null;
+        Fragment fragment = new ViewPagerFragment();
+        return fragment;
     }
 
 

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,13 +31,22 @@ public class ViewPagerFragment extends Fragment {
         wordList = new ArrayList<>();
         meanList = new ArrayList<>();
 
+        String texts = readTextFile(MyValues.path, MyValues.tempFileName);
+
+        TextView showWord = rootView.findViewById(R.id.showWord);
+        TextView showMeaning = rootView.findViewById(R.id.showMeaning);
+        inspectWord(texts, wordList, meanList);
+
+        showWord.setText(wordList.get(0));
+        showMeaning.setText(meanList.get(0));
+
         return rootView;
     }
 
-    public String readTextFile(String path) {
+    public String readTextFile(String path, String fileName) {
         StringBuffer stringBuffer = new StringBuffer();
         try {
-            InputStream inputStream = new FileInputStream(path);
+            InputStream inputStream = new FileInputStream(path + "/" +fileName);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String _word = "";
             while ((_word = bufferedReader.readLine()) != null) {
@@ -48,8 +59,10 @@ public class ViewPagerFragment extends Fragment {
             e.printStackTrace();
             return "";
         }
+        return stringBuffer.toString();
     }
 
+    // 문자열 구분 함수
     public void inspectWord(String line, ArrayList wordList, ArrayList meanList) {
         String temp = "";
         for (int i = 0; i < line.length(); i++) {

@@ -22,6 +22,6 @@
     <item
         android:title=""
         android:id="@+id/menu_setting"
-        android:icon="@drawable/ic_repairing_service"
+        android:icon="@drawable/ic_person_24px"
         />
 </menu>

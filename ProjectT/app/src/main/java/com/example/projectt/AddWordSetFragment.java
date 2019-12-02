@@ -1,5 +1,6 @@
 package com.example.projectt;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,8 @@ public class AddWordSetFragment extends Fragment {
             public void onClick(View v) {
                 if (!wordSetName.getText().toString().equals("")) {
                     MyValues.wordSetName = wordSetName.getText().toString();
+                    Intent homeIntent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                    startActivity(homeIntent);
                 }
                 else {
                     Toast.makeText(((MainActivity)getActivity()), "값을 입력하세요", Toast.LENGTH_SHORT).show();
