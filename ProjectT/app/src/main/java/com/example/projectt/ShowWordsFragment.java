@@ -71,6 +71,7 @@ public class ShowWordsFragment extends Fragment {
     // 문자열 구분 함수
     public void inspectWord(String line, ArrayList wordList, ArrayList meanList) {
         String temp = "";
+
         for (int i = 0; i < line.length(); i++) {
             if (!String.valueOf('|').equals(String.valueOf(line.charAt(i))) && !String.valueOf('/').equals(String.valueOf(line.charAt(i)))) {
                 temp += line.charAt(i);

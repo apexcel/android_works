@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class MyAdapter extends BaseAdapter {
 
     private ArrayList<DataList> dataList = new ArrayList<>();
+    private DataList listViewItem;
     public MyAdapter() {
 
     }
@@ -46,20 +47,34 @@ public class MyAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final int pos = position;
         final Context context = parent.getContext();
+        CustomViewHolder holder;
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.custom_list_view, parent, false);
 
-            TextView eng = (TextView) convertView.findViewById(R.id.eng);
-            TextView kor = (TextView) convertView.findViewById(R.id.kor);
+            listViewItem = dataList.get(pos);
 
-            DataList listViewItem = dataList.get(position);
+            holder = new CustomViewHolder();
+            holder.mEng = convertView.findViewById(R.id.eng);
+            holder.mKor = convertView.findViewById(R.id.kor);
+            convertView.setTag(holder);
 
-            kor.setText(listViewItem.getKor());
-            eng.setText(listViewItem.getEng());
-
+            holder.mEng.setText(listViewItem.getEng());
+            holder.mKor.setText(listViewItem.getKor());
         }
+
+        else {
+            holder = (CustomViewHolder) convertView.getTag();
+            holder.mEng.setText(dataList.get(pos).getEng());
+            holder.mKor.setText(dataList.get(pos).getKor());
+        }
+
         return convertView;
+    }
+
+    public class CustomViewHolder {
+        public TextView mEng;
+        public TextView mKor;
     }
 }

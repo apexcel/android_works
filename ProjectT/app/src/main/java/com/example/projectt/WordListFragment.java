@@ -32,9 +32,6 @@ public class WordListFragment extends Fragment {
     ShowWordsFragment showWordsFragment;
     WordListFragment wordListFragment;
 
-    String param1;
-    String param2;
-
     public static WordListFragment getInstance() {
         return new WordListFragment();
     }
@@ -97,12 +94,23 @@ public class WordListFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 int i = (int)parent.getItemIdAtPosition(position);
-                String name = fileList.get(i);
-                File temp = new File(MyValues.path, name);
+                final String name = fileList.get(i);
+                final File temp = new File(MyValues.path, name);
                 MyValues.wordSetName = "";
                 MyValues.lines = "";
-                temp.delete();
-                Snackbar.make(getActivity().findViewById(android.R.id.content), name + " 삭제되었습니다.", Snackbar.LENGTH_LONG).show();
+
+                MyDialogFragment dialog = MyDialogFragment.newInstance(new MyDialogFragment.MyDialogListener() {
+                    @Override
+                    public void callback(boolean ans) {
+                        if (ans) {
+                            temp.delete();
+                            Snackbar.make(getActivity().findViewById(android.R.id.content), name + " 삭제되었습니다.", Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                });
+                dialog.show(getFragmentManager(), "deleteDialog");
+                //temp.delete();
+                //Snackbar.make(getActivity().findViewById(android.R.id.content), name + " 삭제되었습니다.", Snackbar.LENGTH_LONG).show();
 
                 for (int j = 0; j < tempFileList.size(); j++) {
                     if (!fileList.contains(tempFileList.get(j))) {
