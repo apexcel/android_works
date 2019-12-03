@@ -26,10 +26,6 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     Toolbar tb;
 
-    FragDrawer1 fragDrawer1;
-    FragDrawer2 fragDrawer2;
-    FragDrawer3 fragDrawer3;
-
     TextView intro;
 
     @Override
@@ -38,18 +34,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initializeLayout();
-
+        drawerLayout.openDrawer(Gravity.LEFT);
     }
 
 
     public void initializeLayout() {
         drawerLayout = findViewById(R.id.drawerMain);
-        navigationView = (NavigationView) findViewById(R.id.navView);
-        navigationView.setNavigationItemSelectedListener(navListener);
-
-        fragDrawer1 = new FragDrawer1();
-        fragDrawer2 = new FragDrawer2();
-        fragDrawer3 = new FragDrawer3();
+        //navigationView = (NavigationView) findViewById(R.id.navView);
+        //navigationView.setNavigationItemSelectedListener(navListener);
 
         intro = (TextView) findViewById(R.id.intro);
 
@@ -87,21 +79,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.toDrawerHome:
                     Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(homeIntent);
-                    break;
-                case R.id.toReport:
-                    Intent reportIntent = new Intent(getApplicationContext(), ReportActivity.class);
-                    startActivity(reportIntent);
-                case R.id.toDrawerItem1:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragDrawer1).commit();
-                    intro.setVisibility(View.INVISIBLE);
-                    break;
-                case R.id.toDrawerItem2:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragDrawer2).commit();
-                    intro.setVisibility(View.INVISIBLE);
-                    break;
-                case R.id.toDrawerItem3:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragDrawer3).commit();
-                    intro.setVisibility(View.INVISIBLE);
                     break;
             }
             drawerLayout.closeDrawers();

@@ -1,5 +1,13 @@
 package com.example.projectt;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,42 +16,40 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.PopupMenu;
-import android.widget.Toast;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Context
+    public static Context mainContext;
 
     // 툴바
     Toolbar tb;
 
     // 프래그먼트
     WebViewFragment webViewFragment;
-    ListViewFragment listViewFragment;
+    WordListFragment wordListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tb = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(tb);
-        getSupportActionBar().setTitle("HOME");
+        mainContext = this;
 
         webViewFragment = new WebViewFragment();
-        listViewFragment = new ListViewFragment();
+        wordListFragment = new WordListFragment();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.main_container, listViewFragment).commit();
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        MyPager myPager = new MyPager(this);
+        viewPager.setAdapter(myPager);
+
+        initializeToolbar();
         requestPermission();
         initializeBottomNav();
+
     }
 
     // 권한요청
@@ -82,6 +88,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 툴바 초기화
+    public void initializeToolbar() {
+        tb = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(tb);
+        getSupportActionBar().setTitle("HOME");
+    }
+
     // 바텀 네비게이션 초기화
     public void initializeBottomNav() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -96,9 +109,11 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.menu_search:
                         getSupportActionBar().setTitle("Search");
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, webViewFragment).commit();
+                        replaceFragment(webViewFragment);
                         return true;
                     case R.id.menu_edit:
+                        Intent editIntent = new Intent(getApplicationContext(), EditActivity.class);
+                        startActivity(editIntent);
                         return true;
                     case R.id.menu_setting:
                         return true;
