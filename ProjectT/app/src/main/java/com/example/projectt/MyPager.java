@@ -58,4 +58,5 @@ public class MyPager extends PagerAdapter {
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return (view == (View)object);
     }
+
 }

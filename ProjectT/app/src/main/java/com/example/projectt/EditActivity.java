@@ -25,16 +25,14 @@ public class EditActivity extends AppCompatActivity {
         wordListFragment = new WordListFragment();
 
         initializeToolbar();
-        getSupportActionBar().setTitle("Edit");
         replaceFragment(wordListFragment);
     }
 
     public void initializeToolbar() {
         tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
-        getSupportActionBar().setTitle("EDIT");
+        getSupportActionBar().setTitle("Edit");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home_24px);
     }
 
     @Override

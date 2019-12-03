@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     public void initializeToolbar() {
         tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
-        getSupportActionBar().setTitle("HOME");
+        getSupportActionBar().setTitle("Home");
     }
 
     // 바텀 네비게이션 초기화
@@ -107,15 +107,16 @@ public class MainActivity extends AppCompatActivity {
                         getSupportActionBar().setTitle("Home");
                         startActivity(homeIntent);
                         return true;
-                    case R.id.menu_search:
-                        getSupportActionBar().setTitle("Search");
-                        replaceFragment(webViewFragment);
-                        return true;
                     case R.id.menu_edit:
                         Intent editIntent = new Intent(getApplicationContext(), EditActivity.class);
                         startActivity(editIntent);
                         return true;
+                    case R.id.menu_search:
+                        getSupportActionBar().setTitle("Search");
+                        replaceFragment(webViewFragment);
+                        return true;
                     case R.id.menu_setting:
+                        getSupportActionBar().setTitle("Info");
                         return true;
                 }
                 return false;

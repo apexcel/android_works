@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +22,10 @@ public class ShowWordsFragment extends Fragment {
     ArrayList<String> wordList;
     ArrayList<String> meanList;
 
+    ListView wordsList;
+
+    MyAdapter myAdapter;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,15 +34,17 @@ public class ShowWordsFragment extends Fragment {
         wordList = new ArrayList<>();
         meanList = new ArrayList<>();
 
-        String texts = readTextFile(MyValues.path, MyValues.tempFileName);
+        myAdapter = new MyAdapter();
+        wordsList = (ListView) rootView.findViewById(R.id.show_word_list);
+        wordsList.setAdapter(myAdapter);
 
-        TextView showWord = rootView.findViewById(R.id.showWord);
-        TextView showMeaning = rootView.findViewById(R.id.showMeaning);
+        String texts = readTextFile(MyValues.path, MyValues.tempFileName);
         inspectWord(texts, wordList, meanList);
 
         // TODO: 이 프래그먼트에서 메인액티비티로 데이터 넘겨주기 이후에 받은 데이터로 뷰페이저 실행
-        showWord.setText(wordList.get(0));
-        showMeaning.setText(meanList.get(0));
+        for (int i = 0; i < wordList.size(); i++) {
+            myAdapter.addData(wordList.get(i), meanList.get(i));
+        }
 
         return rootView;
     }

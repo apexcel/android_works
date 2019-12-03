@@ -9,14 +9,14 @@
 
     <item
         android:title=""
-        android:id="@+id/menu_search"
-        android:icon="@drawable/ic_search_black_24px"
+        android:id="@+id/menu_edit"
+        android:icon="@drawable/ic_edit_24px"
         />
 
     <item
         android:title=""
-        android:id="@+id/menu_edit"
-        android:icon="@drawable/ic_edit_24px"
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search_black_24px"
         />
 
     <item
