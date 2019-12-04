@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -49,8 +50,6 @@ public class WordListFragment extends Fragment {
         if (!MyValues.lines.equals("") && !MyValues.wordSetName.equals("")) {
             makeTextFile(MyValues.path, MyValues.wordSetName, MyValues.lines);
         }
-
-        Toast.makeText(((EditActivity)getActivity()).getApplicationContext(), MyValues.lines, Toast.LENGTH_SHORT).show();
 
         addWordSetFragment = new AddWordSetFragment();
         showWordsFragment = new ShowWordsFragment();
@@ -99,18 +98,9 @@ public class WordListFragment extends Fragment {
                 MyValues.wordSetName = "";
                 MyValues.lines = "";
 
-                MyDialogFragment dialog = MyDialogFragment.newInstance(new MyDialogFragment.MyDialogListener() {
-                    @Override
-                    public void callback(boolean ans) {
-                        if (ans) {
-                            temp.delete();
-                            Snackbar.make(getActivity().findViewById(android.R.id.content), name + " 삭제되었습니다.", Snackbar.LENGTH_LONG).show();
-                        }
-                    }
-                });
-                dialog.show(getFragmentManager(), "deleteDialog");
-                //temp.delete();
-                //Snackbar.make(getActivity().findViewById(android.R.id.content), name + " 삭제되었습니다.", Snackbar.LENGTH_LONG).show();
+                temp.delete();
+                Snackbar.make(getActivity().findViewById(android.R.id.content), name + " 삭제되었습니다.", Snackbar.LENGTH_LONG).show();
+
 
                 for (int j = 0; j < tempFileList.size(); j++) {
                     if (!fileList.contains(tempFileList.get(j))) {
@@ -124,9 +114,11 @@ public class WordListFragment extends Fragment {
                 new android.os.Handler().postDelayed(
                         new Runnable() {
                             public void run() {
-                                ((EditActivity)getActivity()).replaceFragment(wordListFragment);
                             }
-                        }, 2000);
+                        }, 1500);
+
+                ((EditActivity)getActivity()).replaceFragment(wordListFragment);
+
                 return true;
             }
         });

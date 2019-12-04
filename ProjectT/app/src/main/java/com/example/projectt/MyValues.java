@@ -7,5 +7,6 @@ public class MyValues {
     public static String lines = "";
     public static final String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
     public static String tempFileName = "";
+    public static String answer = "NONE";
 
 }
