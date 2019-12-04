@@ -59,7 +59,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="3. 파일 저장과 불러오기는 자동."
+        android:text="3. 파일 저장과 불러오기는 자동이며 시험을 본 결과는 다운로드 폴더 안의 test 폴더에 결과가 저장된다."
         android:layout_marginLeft="5dp"
         android:layout_marginTop="3dp"
         />

@@ -19,10 +19,12 @@
         android:layout_height="match_parent"
         >
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="201332020 최형욱"
             />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

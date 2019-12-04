@@ -49,7 +49,7 @@ public class ShowWordsFragment extends Fragment {
         return rootView;
     }
 
-    public String readTextFile(String path, String fileName) {
+    private String readTextFile(String path, String fileName) {
         StringBuffer stringBuffer = new StringBuffer();
         try {
             InputStream inputStream = new FileInputStream(path + "/" +fileName);
