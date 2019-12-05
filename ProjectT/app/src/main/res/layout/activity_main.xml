@@ -21,10 +21,16 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="201332020 최형욱"
+            android:text="단어를 외워요!"
+            android:layout_marginTop="10dp"
+            />
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

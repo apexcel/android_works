@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.BufferedReader;
@@ -63,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         if (!dir.exists()) {
             dir.mkdir();
         }
+
+        ImageView imageView = (ImageView)findViewById(R.id.image_view);
+        Glide.with(this).load(R.raw.ss).into(imageView);
 
     }
 

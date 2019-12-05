@@ -1,20 +1,17 @@
 package com.example.projectt;
 
-import android.animation.Animator;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +43,9 @@ public class TestActivity extends AppCompatActivity {
 
     Animation expand;
     Animation shrink;
+
+    ProgressBar progressBar;
+    int progressValue = 5;
 
     int count;
     int correct, wrong;
@@ -151,6 +151,7 @@ public class TestActivity extends AppCompatActivity {
         chronometer = (Chronometer) findViewById(R.id.chronometer);
         correctCounter = (TextView) findViewById(R.id.cor_counter);
         wrongCounter = (TextView) findViewById(R.id.wrong_counter);
+        progressBar = (ProgressBar) findViewById(R.id.progress);
     }
 
     public void loadQuestions(int i) {
@@ -465,6 +466,8 @@ public class TestActivity extends AppCompatActivity {
                     }
                 }, 550);
         correctCounter.startAnimation(shrink);
+        progressValue += 5;
+        progressBar.setProgress(progressValue);
     }
 
     private void setWrongAnimation() {
@@ -477,5 +480,7 @@ public class TestActivity extends AppCompatActivity {
                     }
                 }, 550);
         wrongCounter.startAnimation(shrink);
+        progressValue += 5;
+        progressBar.setProgress(progressValue);
     }
 }
