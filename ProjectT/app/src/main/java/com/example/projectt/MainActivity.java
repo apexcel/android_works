@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     // 권한요청
     public void requestPermission() {
         int permissionReadStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
