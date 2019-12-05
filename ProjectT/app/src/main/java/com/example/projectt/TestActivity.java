@@ -1,14 +1,20 @@
 package com.example.projectt;
 
+import android.animation.Animator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +44,9 @@ public class TestActivity extends AppCompatActivity {
 
     Chronometer chronometer;
 
+    Animation expand;
+    Animation shrink;
+
     int count;
     int correct, wrong;
     long eTime;
@@ -55,37 +64,43 @@ public class TestActivity extends AppCompatActivity {
         MyValues.sendFilename = "";
         inspectWord(data, words, means);
 
+        expand = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.expansion);
+        shrink = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.return_to_normal);
+
         chronometer.setBase(SystemClock.elapsedRealtime());
 
         Random rnd = new Random();
         correct = 0;
         wrong = 0;
 
-        for (int i = 0; i < 15; i++) {
-            int random = rnd.nextInt(29);
-            int temp = rnd.nextInt(27);
-            if (random + 3 > 29) {
-                random = temp;
-            }
-            if (i % 2 == 0) {
-                qWords.add(new MyQuestionClass(words.get(random).toString(), means.get(random).toString(), means.get(i).toString(), means.get(random + 2).toString(), means.get(i + 3).toString(), means.get(random).toString()));
-            }
-            else if (i % 5 == 0) {
-                qWords.add(new MyQuestionClass(words.get(random).toString(), means.get(random + 2).toString(), means.get(random).toString(), means.get(random + 1).toString(), means.get(random + 2).toString(), means.get(random).toString()));
-            }
-            else if (i % 5 == 0 && i % 2 ==0) {
-                qWords.add(new MyQuestionClass(words.get(random).toString(), means.get(random + 2).toString(), means.get(i).toString(), means.get(random + 1).toString(), means.get(random).toString(), means.get(random).toString()));
-            }
-            else {
-                qWords.add(new MyQuestionClass(words.get(random).toString(), means.get(random + 1).toString(), means.get(i + 1).toString(), means.get(random).toString(), means.get(i + 3).toString(), means.get(random).toString()));
-            }
+        if (words.size() < 15) {
+            alertWarn();
         }
 
-        count = 0;
-        loadQuestions(count);
+        else {
 
-        chronometer.start();
+            for (int i = 0; i < 15; i++) {
+                int random = rnd.nextInt(words.size() - i);
+                int random2 = rnd.nextInt(words.size() - 3);
+                if (random + 3 > words.size()) {
+                    random = rnd.nextInt(words.size() - 3);
+                }
+                if (i == 0 || i == 2 || i == 6 || i == 14) {
+                    qWords.add(new MyQuestionClass(words.get(random).toString(), means.get(random).toString(), means.get(random2).toString(), means.get(random + 1).toString(), means.get(random + 2).toString(), means.get(random).toString()));
+                } else if (i == 3 || i == 7 || i == 13) {
+                    qWords.add(new MyQuestionClass(words.get(random).toString(), means.get(random + 1).toString(), means.get(random).toString(), means.get(random2).toString(), means.get(random + 2).toString(), means.get(random + 2).toString()));
+                } else if (i == 5 || i == 9 || i == 11) {
+                    qWords.add(new MyQuestionClass(words.get(random).toString(), means.get(random + 1).toString(), means.get(random2 + 1).toString(), means.get(random).toString(), means.get(random + 2).toString(), means.get(random).toString()));
+                } else {
+                    qWords.add(new MyQuestionClass(words.get(random).toString(), means.get(random + 2).toString(), means.get(random + 1).toString(), means.get(random2).toString(), means.get(random).toString(), means.get(random).toString()));
+                }
+            }
 
+            count = 0;
+            loadQuestions(count);
+
+            chronometer.start();
+        }
     }
 
     private void inspectWord(String line, ArrayList wordList, ArrayList meanList) {
@@ -159,6 +174,7 @@ public class TestActivity extends AppCompatActivity {
                         count++;
                         correct++;
                         correctCounter.setText("" + correct + " / 15");
+                        setCorrectAnimation();
                         loadQuestions(count);
                     }
                     else {
@@ -184,6 +200,7 @@ public class TestActivity extends AppCompatActivity {
                         wrong++;
                         count++;
                         wrongCounter.setText("" + wrong + " / 15");
+                        setWrongAnimation();
                         loadQuestions(count);
                     }
                     else {
@@ -215,6 +232,7 @@ public class TestActivity extends AppCompatActivity {
                         count++;
                         correct++;
                         correctCounter.setText("" + correct + " / 15");
+                        setCorrectAnimation();
                         loadQuestions(count);
                     }
                     else {
@@ -240,6 +258,7 @@ public class TestActivity extends AppCompatActivity {
                         wrong++;
                         count++;
                         wrongCounter.setText("" + wrong + " / 15");
+                        setWrongAnimation();
                         loadQuestions(count);
                     }
                     else {
@@ -271,6 +290,7 @@ public class TestActivity extends AppCompatActivity {
                         count++;
                         correct++;
                         correctCounter.setText("" + correct + " / 15");
+                        setCorrectAnimation();
                         loadQuestions(count);
                     }
                     else {
@@ -296,6 +316,7 @@ public class TestActivity extends AppCompatActivity {
                         wrong++;
                         count++;
                         wrongCounter.setText("" + wrong + " / 15");
+                        setWrongAnimation();
                         loadQuestions(count);
                     }
                     else {
@@ -327,6 +348,7 @@ public class TestActivity extends AppCompatActivity {
                         count++;
                         correct++;
                         correctCounter.setText("" + correct + " / 15");
+                        setCorrectAnimation();
                         loadQuestions(count);
                     }
                     else {
@@ -352,6 +374,7 @@ public class TestActivity extends AppCompatActivity {
                         wrong++;
                         count++;
                         wrongCounter.setText("" + wrong + " / 15");
+                        setWrongAnimation();
                         loadQuestions(count);
                     }
                     else {
@@ -416,4 +439,43 @@ public class TestActivity extends AppCompatActivity {
         }
     }
 
+    public void alertWarn() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(TestActivity.this);
+        builder.setTitle("경고!");
+        builder.setMessage("해당 단어 세트의 등록된 단어의 개수가 15개 이상이어야 가능합니다!");
+
+        builder.setPositiveButton(R.string.str_confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(homeIntent);
+            }
+        });
+
+        builder.show();
+    }
+
+    private void setCorrectAnimation() {
+        correctCounter.setTextColor(getResources().getColor(R.color.colorPrimary));
+        correctCounter.startAnimation(expand);
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        correctCounter.setTextColor(getResources().getColor((R.color.colorText)));
+                    }
+                }, 550);
+        correctCounter.startAnimation(shrink);
+    }
+
+    private void setWrongAnimation() {
+        wrongCounter.setTextColor(getResources().getColor(R.color.colorWrongText));
+        wrongCounter.startAnimation(expand);
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        wrongCounter.setTextColor(getResources().getColor((R.color.colorText)));
+                    }
+                }, 550);
+        wrongCounter.startAnimation(shrink);
+    }
 }

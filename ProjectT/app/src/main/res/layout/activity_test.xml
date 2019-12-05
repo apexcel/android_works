@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
+            android:layout_marginTop="10dp"
             />
 
         <TextView
@@ -32,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
+            android:layout_marginTop="10dp"
             />
 
     </LinearLayout>
@@ -40,7 +42,6 @@
         android:id="@+id/counter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="1 / 10"
         android:textSize="25sp"
         android:gravity="center_horizontal"
         android:layout_marginTop="5dp"
@@ -69,7 +70,6 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:textSize="30sp"
-            android:text="Some Word"
             />
 
 
@@ -78,47 +78,60 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_weight="1"
         android:layout_gravity="center"
         android:gravity="center"
         >
 
-        <Button
-            android:id="@+id/opt_btn1"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="OPT1"
-            />
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
 
-        <Button
-            android:id="@+id/opt_btn2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="OPT2"
-            />
+            <Button
+                android:id="@+id/opt_btn1"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
 
-        <Button
-            android:id="@+id/opt_btn3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="OPT3"
-            />
+            <Button
+                android:id="@+id/opt_btn2"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
 
-        <Button
-            android:id="@+id/opt_btn4"
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="OPT4"
-            />
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
+            <Button
+                android:id="@+id/opt_btn3"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+
+            <Button
+                android:id="@+id/opt_btn4"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

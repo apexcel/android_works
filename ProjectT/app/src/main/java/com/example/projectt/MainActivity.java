@@ -193,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         final String name = item[selectedItem[0]].replace("/storage/emulated/0/Download/", "");
-
         builder.setPositiveButton(R.string.str_confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
