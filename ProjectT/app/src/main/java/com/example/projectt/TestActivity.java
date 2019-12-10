@@ -1,8 +1,12 @@
 package com.example.projectt;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,10 +54,19 @@ public class TestActivity extends AppCompatActivity {
     int count;
     int correct, wrong;
     long eTime;
+
+    MediaPlayer correctBgm, wrongBgm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+
+        correctBgm = MediaPlayer.create(this, R.raw.corr);
+        wrongBgm = MediaPlayer.create(this, R.raw.wrong);
+
+        float volume = (float) (1 - (Math.log(100 - 95) / Math.log(100)));
+        correctBgm.setVolume(volume, volume);
+        wrongBgm.setVolume(volume, volume);
 
         initializeToolbar();
         setVar();
@@ -428,7 +441,6 @@ public class TestActivity extends AppCompatActivity {
 
     public void makeTextFile(String path, String fileName, String data) {
         File textFile = new File(path + "/" + fileName);
-
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path + "/" + fileName, true));
             bufferedWriter.flush();
@@ -467,6 +479,7 @@ public class TestActivity extends AppCompatActivity {
                 }, 550);
         correctCounter.startAnimation(shrink);
         progressValue += 5;
+        correctBgm.start();
         progressBar.setProgress(progressValue);
     }
 
@@ -481,6 +494,7 @@ public class TestActivity extends AppCompatActivity {
                 }, 550);
         wrongCounter.startAnimation(shrink);
         progressValue += 5;
+        wrongBgm.start();
         progressBar.setProgress(progressValue);
     }
 }

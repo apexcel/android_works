@@ -202,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.str_confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, item[selectedItem[0]], Toast.LENGTH_SHORT).show();
                 MyValues.testLines = readTextFile(item[selectedItem[0]]);
                 MyValues.sendFilename = name;
                 Intent testIntent = new Intent(getApplicationContext(), TestActivity.class);
@@ -215,7 +214,6 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.str_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, name, Toast.LENGTH_SHORT).show();
             }
         });
 

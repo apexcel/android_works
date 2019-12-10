@@ -82,7 +82,6 @@ public class WordListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 parent.getItemAtPosition(position);
-                Toast.makeText(getActivity(), ""+parent.getItemIdAtPosition(position), Toast.LENGTH_SHORT).show();
                 MyValues.tempFileName = parent.getItemAtPosition(position).toString();
                 ((EditActivity) getActivity()).getSupportActionBar().setTitle(parent.getItemAtPosition(position).toString().replace(".txt", ""));
                 ((EditActivity) getActivity()).replaceFragment(showWordsFragment);
