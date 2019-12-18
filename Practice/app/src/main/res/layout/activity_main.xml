@@ -22,4 +22,10 @@
         android:fitsSystemWindows="true"
         app:menu="@menu/drawer_menus"
         />
+
+    <CalendarView
+        android:id="@+id/cal_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CalendarView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -27,12 +28,21 @@ public class MainActivity extends AppCompatActivity {
     FragAdvWidget advfrag;
     FragClocks fragClocks;
     FragChronomerter fragChronomerter;
-
+    int selectYear, selectMonth, selectDay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initiateLayout();
+        CalendarView calView = (CalendarView) findViewById(R.id.cal_view);
+        calView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                selectYear = year;
+                selectMonth = month;
+                selectDay = dayOfMonth;
+            }
+        });
     }
 
     private void initiateLayout() {
